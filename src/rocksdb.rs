@@ -2581,6 +2581,24 @@ impl Env {
         }
     }
 
+    pub fn new_spdk(fsname: &str, confname: &str, bdevname: &str, cache_size_in_mb: u64) -> Env {
+        let fsname = CString::new(fsname).unwrap();
+        let confname = CString::new(confname).unwrap();
+        let bdevname = CString::new(bdevname).unwrap();
+        let env = unsafe {
+            crocksdb_ffi::crocksdb_spdk_env_create(
+                fsname.as_ptr(),
+                confname.as_ptr(),
+                bdevname.as_ptr(),
+                cache_size_in_mb,
+            )
+        };
+        Env {
+            inner: env,
+            base: None,
+        }
+    }
+
     // Create an cloud env to operate with AWS S3.
     #[cfg(feature = "cloud")]
     pub fn new_aws_env(

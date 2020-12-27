@@ -3747,6 +3747,16 @@ crocksdb_env_t* crocksdb_mem_env_create() {
   return result;
 }
 
+crocksdb_env_t* crocksdb_spdk_env_create(const char* fsname, const char* confname, 
+                                         const char* bdevname, uint64_t cache_size_in_mb) {
+  crocksdb_env_t* result = new crocksdb_env_t;
+  result->rep = rocksdb::NewSpdkEnv(Env::Default(), std::string(fsname), std::string(confname), std::string(bdevname), cache_size_in_mb);
+  result->block_cipher = nullptr;
+  result->encryption_provider = nullptr;
+  result->is_default = false;
+  return result;
+}
+
 struct CTRBlockCipher : public BlockCipher {
   CTRBlockCipher(size_t block_size, const std::string& cipertext)
       : block_size_(block_size), cipertext_(cipertext) {

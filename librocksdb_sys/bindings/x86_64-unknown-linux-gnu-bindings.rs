@@ -29,13 +29,13 @@ pub const __STDC_IEC_559_COMPLEX__: u32 = 1;
 pub const __STDC_ISO_10646__: u32 = 201706;
 pub const __GNU_LIBRARY__: u32 = 6;
 pub const __GLIBC__: u32 = 2;
-pub const __GLIBC_MINOR__: u32 = 31;
+pub const __GLIBC_MINOR__: u32 = 32;
 pub const _SYS_CDEFS_H: u32 = 1;
 pub const __glibc_c99_flexarr_available: u32 = 1;
 pub const __WORDSIZE: u32 = 64;
 pub const __WORDSIZE_TIME64_COMPAT32: u32 = 1;
 pub const __SYSCALL_WORDSIZE: u32 = 64;
-pub const __LONG_DOUBLE_USES_FLOAT128: u32 = 0;
+pub const __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI: u32 = 0;
 pub const __HAVE_GENERIC_SELECTION: u32 = 1;
 pub const __GLIBC_USE_LIB_EXT2: u32 = 0;
 pub const __GLIBC_USE_IEC_60559_BFP_EXT: u32 = 0;
@@ -50,6 +50,7 @@ pub const __OFF_T_MATCHES_OFF64_T: u32 = 1;
 pub const __INO_T_MATCHES_INO64_T: u32 = 1;
 pub const __RLIM_T_MATCHES_RLIM64_T: u32 = 1;
 pub const __STATFS_MATCHES_STATFS64: u32 = 1;
+pub const __KERNEL_OLD_TIMEVAL_MATCHES_TIMEVAL64: u32 = 1;
 pub const __FD_SETSIZE: u32 = 1024;
 pub const _BITS_TIME64_H: u32 = 1;
 pub const _BITS_WCHAR_H: u32 = 1;
@@ -209,6 +210,7 @@ pub type __id_t = libc::c_uint;
 pub type __time_t = libc::c_long;
 pub type __useconds_t = libc::c_uint;
 pub type __suseconds_t = libc::c_long;
+pub type __suseconds64_t = libc::c_long;
 pub type __daddr_t = libc::c_int;
 pub type __key_t = libc::c_int;
 pub type __clockid_t = libc::c_int;
@@ -2800,6 +2802,12 @@ extern "C" {
     );
 }
 extern "C" {
+    pub fn crocksdb_ratelimiter_set_auto_tuned(
+        limiter: *mut crocksdb_ratelimiter_t,
+        auto_tuned: libc::c_uchar,
+    );
+}
+extern "C" {
     pub fn crocksdb_ratelimiter_get_singleburst_bytes(limiter: *mut crocksdb_ratelimiter_t) -> i64;
 }
 pub const env_io_priority_low: _bindgen_ty_6 = 0;
@@ -2823,41 +2831,15 @@ extern "C" {
     pub fn crocksdb_ratelimiter_get_bytes_per_second(limiter: *mut crocksdb_ratelimiter_t) -> i64;
 }
 extern "C" {
+    pub fn crocksdb_ratelimiter_get_auto_tuned(
+        limiter: *mut crocksdb_ratelimiter_t,
+    ) -> libc::c_uchar;
+}
+extern "C" {
     pub fn crocksdb_ratelimiter_get_total_requests(
         limiter: *mut crocksdb_ratelimiter_t,
         pri: libc::c_uchar,
     ) -> i64;
-}
-extern "C" {
-    pub fn crocksdb_compactionfilter_create(
-        state: *mut libc::c_void,
-        destructor: ::std::option::Option<unsafe extern "C" fn(arg1: *mut libc::c_void)>,
-        filter: ::std::option::Option<
-            unsafe extern "C" fn(
-                arg1: *mut libc::c_void,
-                level: libc::c_int,
-                key: *const libc::c_char,
-                key_length: usize,
-                existing_value: *const libc::c_char,
-                value_length: usize,
-                new_value: *mut *mut libc::c_char,
-                new_value_length: *mut usize,
-                value_changed: *mut libc::c_uchar,
-            ) -> libc::c_uchar,
-        >,
-        name: ::std::option::Option<
-            unsafe extern "C" fn(arg1: *mut libc::c_void) -> *const libc::c_char,
-        >,
-    ) -> *mut crocksdb_compactionfilter_t;
-}
-extern "C" {
-    pub fn crocksdb_compactionfilter_set_ignore_snapshots(
-        arg1: *mut crocksdb_compactionfilter_t,
-        arg2: libc::c_uchar,
-    );
-}
-extern "C" {
-    pub fn crocksdb_compactionfilter_destroy(arg1: *mut crocksdb_compactionfilter_t);
 }
 extern "C" {
     pub fn crocksdb_compactionfiltercontext_is_full_compaction(
@@ -2873,6 +2855,19 @@ extern "C" {
     pub fn crocksdb_compactionfiltercontext_is_bottommost_level(
         context: *mut crocksdb_compactionfiltercontext_t,
     ) -> libc::c_uchar;
+}
+extern "C" {
+    pub fn crocksdb_compactionfiltercontext_file_numbers(
+        context: *mut crocksdb_compactionfiltercontext_t,
+        buffer: *mut *const u64,
+        len: *mut usize,
+    );
+}
+extern "C" {
+    pub fn crocksdb_compactionfiltercontext_table_properties(
+        context: *mut crocksdb_compactionfiltercontext_t,
+        offset: usize,
+    ) -> *mut crocksdb_table_properties_t;
 }
 extern "C" {
     pub fn crocksdb_compactionfilterfactory_create(
@@ -3254,6 +3249,14 @@ extern "C" {
 }
 extern "C" {
     pub fn crocksdb_mem_env_create() -> *mut crocksdb_env_t;
+}
+extern "C" {
+    pub fn crocksdb_spdk_env_create(
+        fsname: *const libc::c_char,
+        confname: *const libc::c_char,
+        bdevname: *const libc::c_char,
+        cache_size_in_mb: u64,
+    ) -> *mut crocksdb_env_t;
 }
 extern "C" {
     pub fn crocksdb_ctr_encrypted_env_create(
