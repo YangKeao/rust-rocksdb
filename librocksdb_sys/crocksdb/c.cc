@@ -3748,7 +3748,8 @@ crocksdb_env_t* crocksdb_mem_env_create() {
 }
 
 crocksdb_env_t* crocksdb_spdk_env_create(const char* fsname, const char* confname, 
-                                         const char* bdevname, const char* prefix, uint64_t cache_size_in_mb) {
+                                         const char* bdevname, const char* prefix, 
+                                         uint64_t cache_size_in_mb) {
   crocksdb_env_t* result = new crocksdb_env_t;
   result->rep = rocksdb::NewSpdkEnv(Env::Default(), std::string(fsname), std::string(confname), std::string(bdevname), std::string(prefix), cache_size_in_mb);
   result->block_cipher = nullptr;
