@@ -1529,7 +1529,7 @@ extern C_ROCKSDB_LIBRARY_API void crocksdb_cache_set_capacity(
 extern C_ROCKSDB_LIBRARY_API crocksdb_env_t* crocksdb_default_env_create();
 extern C_ROCKSDB_LIBRARY_API crocksdb_env_t* crocksdb_mem_env_create();
 extern C_ROCKSDB_LIBRARY_API crocksdb_env_t* crocksdb_spdk_env_create(const char* fsname, const char* confname, 
-    const char* bdevname, uint64_t cache_size_in_mb);
+    const char* bdevname,  const char* prefix, uint64_t cache_size_in_mb);
 extern C_ROCKSDB_LIBRARY_API crocksdb_env_t* crocksdb_ctr_encrypted_env_create(
     crocksdb_env_t* base_env, const char* ciphertext, size_t ciphertext_len);
 extern C_ROCKSDB_LIBRARY_API void crocksdb_env_set_background_threads(

@@ -3255,6 +3255,7 @@ extern "C" {
         fsname: *const libc::c_char,
         confname: *const libc::c_char,
         bdevname: *const libc::c_char,
+        prefix: *const libc::c_char,
         cache_size_in_mb: u64,
     ) -> *mut crocksdb_env_t;
 }

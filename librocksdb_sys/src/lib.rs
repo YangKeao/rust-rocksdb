@@ -1579,6 +1579,7 @@ extern "C" {
         fsname: *const c_char,
         confname: *const c_char,
         bdevname: *const c_char,
+        prefix: *const libc::c_char,
         cache_size_in_mb: u64,
     ) -> *mut DBEnv;
     pub fn crocksdb_ctr_encrypted_env_create(
