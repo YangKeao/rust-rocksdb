@@ -2581,7 +2581,13 @@ impl Env {
         }
     }
 
-    pub fn new_spdk(fsname: &str, confname: &str, bdevname: &str, prefix:&str, cache_size_in_mb: u64) -> Env {
+    pub fn new_spdk(
+        fsname: &str,
+        confname: &str,
+        bdevname: &str,
+        prefix: &str,
+        cache_size_in_mb: u64,
+    ) -> Env {
         let fsname = CString::new(fsname).unwrap();
         let confname = CString::new(confname).unwrap();
         let bdevname = CString::new(bdevname).unwrap();
