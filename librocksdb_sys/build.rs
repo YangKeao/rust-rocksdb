@@ -233,30 +233,16 @@ fn build_rocksdb() -> Build {
     println!("cargo:rustc-link-search={}/build/lib", dpdk_root);
     println!("cargo:rustc-link-search={}/.libs", isal_root);
 
-    println!("cargo:rustc-link-lib=static=spdk_thread");
-    println!("cargo:rustc-link-lib=static=spdk_blobfs");
-    println!("cargo:rustc-link-lib=static=spdk_blobfs_bdev");
-    println!("cargo:rustc-link-lib=static=spdk_blob");
-    println!("cargo:rustc-link-lib=static=spdk_blob_bdev");
-    println!("cargo:rustc-link-lib=static=spdk_bdev_nvme");
-    println!("cargo:rustc-link-lib=static=spdk_bdev");
-    println!("cargo:rustc-link-lib=static=spdk_util");
-    println!("cargo:rustc-link-lib=static=spdk_notify");
-    println!("cargo:rustc-link-lib=static=spdk_env_dpdk");
-    println!("cargo:rustc-link-lib=static=spdk_json");
-    println!("cargo:rustc-link-lib=static=spdk_event");
-    println!("cargo:rustc-link-lib=static=spdk_rpc");
-    println!("cargo:rustc-link-lib=static=spdk_jsonrpc");
-    println!("cargo:rustc-link-lib=static=spdk_log");
-    println!("cargo:rustc-link-lib=static=spdk_trace");
-    println!("cargo:rustc-link-lib=static=rte_eal");
-    println!("cargo:rustc-link-lib=static=rte_telemetry");
-    println!("cargo:rustc-link-lib=static=rte_kvargs");
-    println!("cargo:rustc-link-lib=static=rte_mempool");
-    println!("cargo:rustc-link-lib=static=rte_ring");
-    println!("cargo:rustc-link-lib=static=rte_bus_pci");
-    println!("cargo:rustc-link-lib=static=rte_pci");
-    println!("cargo:rustc-link-lib=static=isal");
+    println!("cargo:rustc-link-lib=dylib=spdk");
+    println!("cargo:rustc-link-lib=dylib=spdk_env_dpdk");
+    println!("cargo:rustc-link-lib=dylib=rte_eal");
+    println!("cargo:rustc-link-lib=dylib=rte_power");
+    println!("cargo:rustc-link-lib=dylib=rte_telemetry");
+    println!("cargo:rustc-link-lib=dylib=rte_kvargs");
+    println!("cargo:rustc-link-lib=dylib=rte_mempool");
+    println!("cargo:rustc-link-lib=dylib=rte_ring");
+    println!("cargo:rustc-link-lib=dylib=rte_bus_pci");
+    println!("cargo:rustc-link-lib=dylib=rte_pci");
     println!("cargo:rustc-link-lib=dylib=uuid");
     build
 }
